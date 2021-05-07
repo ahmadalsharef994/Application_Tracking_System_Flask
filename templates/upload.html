@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<html>
+   <head>
+      <link rel="icon" href="https://app.moyyn.com/static/media/Logo.ed17c448.png" type="image/icon type">
+      <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
+      <style>
+
+.body {
+  margin: 50 50 50 50;
+  background-color: #eef2f5;
+  font-family: Roboto, 'Roboto', 'Oxygen';
+   padding-top: 50px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  padding-left: 80px;
+}
+.moyynButton--main {
+  color: white;
+  background-color: #265CFF;
+  border: 1px solid #265CFF;
+  font-size: 0.8rem;
+  border-radius: 7.5px;
+  text-transform: capitalize;
+  padding: 0.5rem 2rem;
+  -webkit-box-shadow: 0px 0px 12px 2px rgba(194,194,194,1);
+  -moz-box-shadow: 0px 0px 12px 2px rgba(194,194,194,1);
+  box-shadow: 0px 0px 12px 2px rgba(194,194,194,1);
+  height: 100%;
+}
+.moyynButton--main:hover {
+  color: #265CFF;
+  background-color: white;
+  border: 1px solid #265CFF;
+}
+h2 { color: #111; font-family: 'Roboto', sans-serif; font-size: 30px; font-weight: 300; line-height: 32px;}
+</style>
+
+   </head>
+   <body class="body">
+      <h2>First: Paste your job description in the text box </h2>
+      <form action = "{{url_for('upload_file')}}" method = "POST" accept=".doc,.docx,application/msword, application/pdf, text/plain"
+         enctype = "multipart/form-data" >
+         <!--  <div><input type = "file" name = "jd_file" /></div>-->
+         <!--  <input type ="text" name="jd_text"> -->
+         <div><textarea name="jd_text" rows="4" cols="50"> Paste your job description here </textarea></div>
+         <div><input class="moyynButton--main" type = "submit" value="submit job description"/></div>
+      </form>
+
+   {{excel_upload_form}}
+
+   {% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+   {% endfor %}
+
+   {{results_download_form}}
+
+   </body>
+</html>
