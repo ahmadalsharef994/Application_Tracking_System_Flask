@@ -7,4 +7,9 @@ MarkupSafe==1.1.1
 Werkzeug==1.0.1
 nltk
 tika
+numpy
+os
+sklearn
+string
+pandas
 uwsgi
