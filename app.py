@@ -49,42 +49,24 @@ results_download_form = Markup("""
          </form>
 """)
 
-job_des=''
+job_des='Paste you job description here'
 profiles ={}
 results = pd.DataFrame()
 
 @app.route('/')
 def main_page():
-    return render_template('upload.html')
+    return render_template('upload.html', job_des=job_des)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-            # try:
-            #     global job_des
-            #     f = request.files['jd_file']
-            #     fsn = secure_filename(f.filename)
-            #     f.save(fsn)
-            #     job_des = read_JD(fsn)
-            #     job_des = cleanText(job_des)
-            #     job_des = preprocess(job_des)
-            #     return render_template('upload.html', job_des=job_des, excel_upload_form= excel_upload_form)
-            # except:
+
             global job_des
             job_des = request.form.get('jd_text')
             job_des = cleanText(job_des)
             job_des = preprocess(job_des)
 
             return render_template('upload.html', job_des=job_des, excel_upload_form= excel_upload_form)
-
-# def read_JD(f):
-#     ext = os.path.splitext(f)[1]
-#     if (ext=='.pdf'):
-#         job_des = open(f, 'rb')
-#         job_des = pdftotext_converter(job_des)
-#         return job_des
-#     else:
-#         return ext
 
 @app.route('/upload_candidates', methods=['GET', 'POST'])
 def upload_candidates():
@@ -96,6 +78,14 @@ def upload_candidates():
     candidate_name_column = "Name"  # change to the index of the candidate_name column in the excel file
     #candidate_headline_column = "About"  # change to the index of the candidate_headline column
     candidates_df = pd.read_csv(fsn)
+    os.remove(fsn)
+    keywords = ' Recruiter - IT recruiter - founder - Director - CEO - Geschaftsfuhrer - Inhaber - Grunder - Head of - Talent acquisition - HR Manager - not looking for - Leiter '
+    candidates_df.drop_duplicates(['Name'], inplace=True)
+
+    for name in keywords.split('-'):
+        # test_df['Irrelevent'] = test_df['About'].apply(lambda x: True if name.lower() in x.lower() else False)
+        candidates_df = candidates_df[~candidates_df.About.str.contains(name)]
+
     headers = list(candidates_df)
     headers = list(set(headers)-set(["Name", "Email", "CV", "Email ID", "Gender", "First Name", "Last Name", "CV_German", "Driver's License", "Family Status", "Relocation Willingness_x", "Feedback" , "Matching Percentage", "Total Keywords", "Language Score", "Remote Working Willingness", "Suggestion Type", "Notice Period", "Location Flag", "Earliest Joining Date", "Creation Timestamp"]))
     print(headers)
@@ -137,7 +127,7 @@ def compare():
     global results
     results = df
     #results = results["Name", "ISC_score", "SC_score"]
-    return render_template('upload.html', tables=[results.head(10).to_html(classes='data')], titles=results.columns.values, excel_upload_form=excel_upload_form, results_download_form=results_download_form)
+    return render_template('upload.html', job_des=job_des, tables=[results.head(10).to_html(classes='data')], titles=results.columns.values, excel_upload_form=excel_upload_form, results_download_form=results_download_form)
 
 @app.route('/download_results')
 def download_results():
