@@ -9,6 +9,5 @@ nltk
 tika
 numpy
 sklearn
-string
 pandas
 uwsgi
