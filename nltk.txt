@@ -2,3 +2,4 @@ wordnet
 pros_cons
 reuters
 stopwords
+punkt
