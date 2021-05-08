@@ -1,7 +1,7 @@
 
 from tika import parser
 import nltk
-nltk.download('stopwords)
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
