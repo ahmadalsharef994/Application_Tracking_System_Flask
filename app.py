@@ -91,12 +91,11 @@ def upload_candidates():
   if request.method == 'POST':
     f = request.files['ca_file']
     fsn = secure_filename(f.filename)
-    app.config['UPLOAD_FOLDER'] = 'templates'
-    f.save(os.path.join(app.config['UPLOAD_FOLDER'],fsn))
+    f.save(fsn)
     global profiles
     candidate_name_column = "Name"  # change to the index of the candidate_name column in the excel file
     #candidate_headline_column = "About"  # change to the index of the candidate_headline column
-    candidates_df = pd.read_csv(os.path.join(app.config['UPLOAD_FOLDER'],fsn))
+    candidates_df = pd.read_csv(fsn)
     headers = list(candidates_df)
     headers = list(set(headers)-set(["Name", "Email", "CV", "Email ID", "Gender", "First Name", "Last Name", "CV_German", "Driver's License", "Family Status", "Relocation Willingness_x", "Feedback" , "Matching Percentage", "Total Keywords", "Language Score", "Remote Working Willingness", "Suggestion Type", "Notice Period", "Location Flag", "Earliest Joining Date", "Creation Timestamp"]))
     print(headers)
